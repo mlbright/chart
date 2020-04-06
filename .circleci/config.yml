@@ -428,6 +428,7 @@ workflows:
             branches:
               only:
                 - master
+                - circle-ci-api
       - upload_docs:
           requires:
             - codacy/checkout_and_version
