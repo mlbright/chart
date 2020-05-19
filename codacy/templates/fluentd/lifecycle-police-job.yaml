@@ -20,6 +20,24 @@ spec:
         {{- include "codacy.labels" . | indent 8 }}
     spec:
       restartPolicy: Never
+      initContainers:
+      - name: init-minio
+        image: "mesosphere/aws-cli:1.14.5"
+        env:
+          - name: AWS_ACCESS_KEY_ID
+            value: "{{ .Values.global.minio.accessKey }}"
+          - name: AWS_SECRET_ACCESS_KEY
+            value: "{{ .Values.global.minio.secretKey }}"
+        command: ['sh']
+        args:
+        - '-c'
+        - until aws s3 ls --endpoint-url http://{{ .Values.global.minio.location }}:{{ .Values.global.minio.port }} ; do
+            echo waiting for minio ;
+            sleep 2 ;
+          done ;
+          for i in analysis coverage cli-reports commit-diff logs ; do
+            aws s3 mb s3://$i --endpoint-url http://{{ .Values.global.minio.location }}:{{ .Values.global.minio.port }}  || true ;
+          done
       containers:
       - name: fluentd-lifecycle-policy-creator
         image: "mesosphere/aws-cli:1.14.5"
