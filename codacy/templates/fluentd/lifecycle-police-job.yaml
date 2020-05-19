@@ -12,7 +12,7 @@ metadata:
     "helm.sh/hook-weight": "-5"
     "helm.sh/hook-delete-policy": hook-succeeded
 spec:
-  backoffLimit: 30
+  backoffLimit: 100
   template:
     metadata:
       name: "{{ .Release.Name }}"
@@ -28,10 +28,14 @@ spec:
             value: "{{ .Values.global.minio.accessKey }}"
           - name: AWS_SECRET_ACCESS_KEY
             value: "{{ .Values.global.minio.secretKey }}"
-        command: ["sh"]
+        command: ["aws"]
         args:
-          - -c
-          # TO BE TESTED
-          # look ma, I'm a one liner master :-P
-          - 'aws s3api put-bucket-lifecycle-configuration --bucket {{ .Values.fluentdoperator.bucketName }} --endpoint-url http://{{ .Values.global.minio.location }}:{{ .Values.global.minio.port }} --lifecycle-configuration {"Rules":[{"Expiration":{"Days": {{ .Values.fluentdoperator.expirationDays }} },"ID":"Delete old logs","Status":"Enabled"}]} || true'
+          - s3api
+          - put-bucket-lifecycle-configuration
+          - --bucket
+          - {{ .Values.fluentdoperator.bucketName }}
+          - --endpoint-url
+          - http://{{ .Values.global.minio.location }}:{{ .Values.global.minio.port }}
+          - --lifecycle-configuration
+          - '{"Rules":[{"Expiration":{"Days": {{ .Values.fluentdoperator.expirationDays }} },"ID":"Delete old logs","Status":"Enabled"}]}'
 {{ end }}
