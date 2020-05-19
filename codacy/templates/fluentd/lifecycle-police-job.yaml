@@ -28,14 +28,10 @@ spec:
             value: "{{ .Values.global.minio.accessKey }}"
           - name: AWS_SECRET_ACCESS_KEY
             value: "{{ .Values.global.minio.secretKey }}"
-        command: ["aws"]
+        command: ["sh"]
         args:
-          - s3api
-          - put-bucket-lifecycle-configuration
-          - --bucket
-          - {{ .Values.fluentdoperator.bucketName }}
-          - --endpoint-url
-          - http://{{ .Values.global.minio.location }}:{{ .Values.global.minio.port }}
-          - --lifecycle-configuration
-          - '{"Rules":[{"Expiration":{"Days": {{ .Values.fluentdoperator.expirationDays }} },"ID":"Delete old logs","Status":"Enabled"}]}'
+          - -c
+          # TO BE TESTED
+          # look ma, I'm a one liner master :-P
+          - 'aws s3api put-bucket-lifecycle-configuration --bucket {{ .Values.fluentdoperator.bucketName }} --endpoint-url http://{{ .Values.global.minio.location }}:{{ .Values.global.minio.port }} --lifecycle-configuration {"Rules":[{"Expiration":{"Days": {{ .Values.fluentdoperator.expirationDays }} },"ID":"Delete old logs","Status":"Enabled"}]} || true'
 {{ end }}
