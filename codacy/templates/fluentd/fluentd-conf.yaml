@@ -6,7 +6,6 @@ metadata:
   labels:
     {{- include "codacy.labels" . | indent 4 }}
 data:
-  FLUENTD_SYSTEMD_CONF: disable
   fluent.conf: |
 
     # Drop tools logs
