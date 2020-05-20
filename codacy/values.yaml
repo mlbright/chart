@@ -393,6 +393,7 @@ fluentdoperator:
   fluentd:
     extraEnv:
       FLUENTD_SYSTEMD_CONF: "disable"
+  reloader:
     extraEnv:
       FLUENTD_SYSTEMD_CONF: "disable"
 
