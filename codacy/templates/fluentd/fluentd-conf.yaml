@@ -8,6 +8,10 @@ metadata:
 data:
   fluent.conf: |
 
+    <match systemd.** docker>
+      @type null
+    </match>
+
     # Drop tools logs
     <match $labels(app=codacy-plugin)>
       @type null
