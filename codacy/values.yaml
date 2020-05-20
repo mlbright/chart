@@ -392,10 +392,8 @@ fluentdoperator:
   useReleaseNamespaceOnly: true
   fluentd:
     extraEnv:
-      FLUENTD_SYSTEMD_CONF: "disable"
-  reloader:
-    extraEnv:
-      FLUENTD_SYSTEMD_CONF: "disable"
+      - name: FLUENTD_SYSTEMD_CONF
+        value: disable
 
 ## YOU ARE NOT ADVISED TO CHANGE BEYOND THIS POINT
 ## Defaults for Internal Storage coming from requirements
