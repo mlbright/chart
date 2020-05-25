@@ -1,4 +1,14 @@
 global:
+  analysisdb:
+    create: false
+    imageTag: "9.6.2"
+    postgresqlUsername: not-postgresqlUsername
+    postgresqlDatabase: not-postgresqlDatabase
+    postgresqlPassword: not-postgresqlPassword
+    host: codacy-postgres
+    service:
+      port: 5432
+
   github:
     enabled: "true"
     login: "true"
@@ -18,13 +28,13 @@ global:
 
   gitlabEnterprise:
     enabled: "true"
-    login: "true"
+    login: "false"
     hostname: "gitlab.dev.codacy.org"
     protocol: "http"
     port: 80
 
   bitbucket:
-    enabled: "true"
+    enabled: "false"
     login: "true"
 
   bitbucketEnterprise:
